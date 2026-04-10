@@ -716,7 +716,8 @@ header{text-align:center;padding:40px 0}
 </div>
 
 <script>
-const BASE = 'http://xc12267qh358.vicp.fun';
+// 动态获取 BASE URL（支持 Railway 部署）
+const BASE = window.location.origin;
 const EMOJI = {happy:'&#128578;',tired:'&#128564;',frustrated:'&#128548;',excited:'&#128513;',neutral:'&#128528;'};
 const MCLASS = {happy:'mood-happy',tired:'mood-tired',frustrated:'mood-frustrated',excited:'mood-excited',neutral:'mood-neutral'};
 const TLABEL = {checkin:'打卡',error:'报错',tip:'技巧',rant:'吐槽',compute_request:'算力求助',help:'互助'};
@@ -895,9 +896,12 @@ setInterval(()=>{loadStats()},15000);
 def index():
     return render_template_string(HOMEPAGE_HTML)
 
+# 初始化数据（Railway/gunicorn 导入时执行）
+init_data()
+
 if __name__ == '__main__':
-    init_data()
+    import os
+    port = int(os.environ.get('PORT', 5000))
     print('=== AI驿站 3.0 启动 ===')
-    print('本地: http://localhost:5000')
-    print('公网: http://xc12267qh358.vicp.fun')
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    print(f'本地: http://localhost:{port}')
+    app.run(host='0.0.0.0', port=port, debug=False)
