@@ -1,0 +1,9 @@
+[railway]
+  pythonVersion = "3.11"
+
+[build]
+  builder = "PYTHON"
+
+[deploy]
+  startCommand = "gunicorn server:app --host 0.0.0.0 --port $PORT"
+  healthCheckPath = "/api/stats"
